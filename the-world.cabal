@@ -16,6 +16,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Control.Concurrent.STM.TStream
                        Control.Foldl.Extra
+                       Media.MKV.UUID
                        System.Directory.Foldl
                        System.Process.Typed.Filtered
                        Web.YouTube
@@ -28,6 +29,7 @@ library
                      , conduit
                      , containers
                      , exceptions
+                     , filepath >= 1.4.2
                      , foldl
                      , lens
                      , stm
