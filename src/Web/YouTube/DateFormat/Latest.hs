@@ -47,7 +47,7 @@ import Data.Set      (Set, singleton, member)
 
 import System.Directory.Foldl (foldDirectoryContents)
 
-import Web.YouTube            (youtubeDl)
+import Web.YouTube            (youtubeDl')
 import Web.YouTube.Playlist   (getIds)
 import Web.YouTube.DateFormat (parse, uploadDate, videoId, format)
 
@@ -79,8 +79,8 @@ downloadLatest :: FilePath -- ^ Directory to store videos in
                -> IO ()
 downloadLatest fp playlist options = runConduit
     $ (getLatestIds playlist =<< liftIO (latestGot fp))
-   .| awaitForever (\x -> liftIO $ youtubeDl fp $ options ++ ["-o", format,
-                                                  "--", x])
+   .| awaitForever (\x -> liftIO $ youtubeDl' fp $ options ++ ["-o", format,
+                                                   "--", x])
 
 untilGot :: Set String -> ConduitT String String Catch ()
 untilGot got = fix $ \r -> await >>= \case

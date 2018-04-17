@@ -28,12 +28,14 @@ library
                      , async
                      , conduit
                      , containers
+                     , directory >= 1.2.7.0
                      , exceptions
                      , filepath >= 1.4.2
                      , foldl
                      , lens
                      , stm
                      , streaming-commons
+                     , temporary
                      , time
                      , transformers
                      , typed-process
