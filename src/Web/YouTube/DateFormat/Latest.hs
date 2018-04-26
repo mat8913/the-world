@@ -47,7 +47,7 @@ import Data.Set      (Set, singleton, member)
 
 import System.Directory.Foldl (foldDirectoryContents)
 
-import Web.YouTube            (youtubeDl')
+import Web.YouTube            (Middleware, youtubeDl)
 import Web.YouTube.Playlist   (getIds)
 import Web.YouTube.DateFormat (parse, uploadDate, videoId, format)
 
@@ -73,14 +73,15 @@ latestGot fp = foldDirectoryContents fp $
     collectLargest uploadDate (singleton . videoId)
 
 -- | Download the latest videos in a playlist that haven't already been gotten.
-downloadLatest :: FilePath -- ^ Directory to store videos in
-               -> String   -- ^ Playlist
-               -> [String] -- ^ Extra options to pass to youtube-dl
+downloadLatest :: FilePath   -- ^ Directory to store videos in
+               -> String     -- ^ Playlist
+               -> [String]   -- ^ Extra options to pass to youtube-dl
+               -> Middleware
                -> IO ()
-downloadLatest fp playlist options = runConduit
+downloadLatest fp playlist options mw = runConduit
     $ (getLatestIds playlist =<< liftIO (latestGot fp))
-   .| awaitForever (\x -> liftIO $ youtubeDl' fp $ options ++ ["-o", format,
-                                                   "--", x])
+   .| awaitForever (\x -> liftIO $ youtubeDl fp mw $ options ++ ["-o", format,
+                                                                 "--", x])
 
 untilGot :: Set String -> ConduitT String String Catch ()
 untilGot got = fix $ \r -> await >>= \case
