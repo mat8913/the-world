@@ -41,6 +41,14 @@ library
                      , typed-process
   default-language:    Haskell2010
 
+executable mytdl
+  hs-source-dirs:      mytdl
+  main-is:             Main.hs
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , the-world
+  default-language:    Haskell2010
+
 executable mytdlatest
   hs-source-dirs:      mytdlatest
   main-is:             Main.hs
